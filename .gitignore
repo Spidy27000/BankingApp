@@ -1,3 +1,4 @@
-./Frontend/__pycache__/
-./Backend/__pycache__/
+Backend/__pycache__/
+Frontend/__pycache__/
+*.py[cod]
 
