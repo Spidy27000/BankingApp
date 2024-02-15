@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 class LoginPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         self.master = master
-        self.pack()
 
         self.label_username = tk.Label(self, text="Username:")
         self.label_password = tk.Label(self, text="Password:")
@@ -19,7 +19,9 @@ class LoginPage(tk.Frame):
         self.entry_password.grid(row=1, column=1, padx=10, pady=10)
 
         self.button_login = tk.Button(self, text="Login", command=self.login)
-        self.button_signup = tk.Button(self, text="Switch to Sign Up", command=lambda: master.switch_to_signup())
+        self.button_signup = tk.Button(
+            self, text="Switch to Sign Up", command=lambda: master.show_signup()
+        )
 
         self.button_login.grid(row=2, column=1, pady=10)
         self.button_signup.grid(row=3, column=1)
