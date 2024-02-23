@@ -4,7 +4,7 @@ from tkinter import messagebox
 
 class LoginPage(tk.Frame):
     def __init__(self, master):
-        tk.Frame.__init__(self, master)
+        tk.Frame.__init__(self, master,bg="#505050", height=400,width=400)
         self.master = master
 
         self.label_username = tk.Label(self, text="Username:")
@@ -33,5 +33,6 @@ class LoginPage(tk.Frame):
         # Basic login validation (you can replace this with your authentication logic)
         if username == "user" and password == "password":
             messagebox.showinfo("Login Successful", "Welcome, {}".format(username))
+            self.master.show_home()
         else:
             messagebox.showerror("Login Failed", "Invalid username or password")

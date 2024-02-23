@@ -4,7 +4,7 @@ from tkinter import messagebox
 
 class SignUpPage(tk.Frame):
     def __init__(self, master):
-        tk.Frame.__init__(self, master)
+        tk.Frame.__init__(self, master,bg="#505050")
         self.master = master
 
         self.label_username = tk.Label(self, text="Username:")
@@ -33,8 +33,10 @@ class SignUpPage(tk.Frame):
     def signup(self):
         new_username = self.entry_username.get()
         new_password = self.entry_password.get()
+        new_display_name = self.entry_display_name.get()
 
         # Basic signup logic (you can replace this with your registration logic)
         messagebox.showinfo(
             "Sign Up Successful", "Account created for {}".format(new_username)
         )
+        self.master.show_home()
