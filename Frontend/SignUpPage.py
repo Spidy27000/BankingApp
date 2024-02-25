@@ -4,31 +4,43 @@ from tkinter import messagebox
 
 class SignUpPage(tk.Frame):
     def __init__(self, master):
-        tk.Frame.__init__(self, master,bg="#505050")
+        tk.Frame.__init__(self, master,bg="#FFFFFF")
         self.master = master
 
-        self.label_username = tk.Label(self, text="Username:")
-        self.label_display_name = tk.Label(self, text="Name:")
-        self.label_password = tk.Label(self, text="Password:")
+        self.label_username = tk.Label(self, text="Username:",bg = "#FFFFFF")
+        self.label_display_name = tk.Label(self, text="Name:",bg = "#FFFFFF")
+        self.label_password = tk.Label(self, text="Password:",bg = "#FFFFFF")
 
         self.entry_username = tk.Entry(self)
         self.entry_display_name = tk.Entry(self)
         self.entry_password = tk.Entry(self, show="*")
 
-        self.label_username.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
-        self.label_display_name.grid(row=1, column=0, padx=10, pady=10, sticky=tk.E)
-        self.label_password.grid(row=2, column=0, padx=10, pady=10, sticky=tk.E)
-        self.entry_username.grid(row=0, column=1, padx=10, pady=10)
-        self.entry_display_name.grid(row=1, column=1, padx=10, pady=10)
-        self.entry_password.grid(row=2, column=1, padx=10, pady=10)
-
-        self.button_signup = tk.Button(self, text="Sign Up", command=self.signup)
+        self.button_signup = tk.Button(
+            self,
+            text="Sign up",
+            command=lambda: self.signup(),
+            bg="#FFFFFF",
+            relief="solid",
+            borderwidth=1
+        )
         self.button_login = tk.Button(
-            self, text="Switch to Login", command=lambda: master.show_login()
+            self,
+            text="Switch to Login",
+            command=lambda: master.show_login(),
+            relief="solid",
+            borderwidth=1,
+            bg="#FFFFFF"
         )
 
-        self.button_signup.grid(row=3, column=1, pady=10)
-        self.button_login.grid(row=4, column=1)
+        self.label_username.grid(row=0, column=0,  padx=(60,10), pady=(40,10))
+        self.label_display_name.grid(row=1, column=0 ,padx=(60,10), pady=(10,10))
+        self.label_password.grid(row=2, column=0, padx=(60,10), pady=(10,10))
+        self.entry_username.grid(row=0, column=1,padx=(10,50), pady=(40,10))
+        self.entry_display_name.grid(row=1, column=1,padx=(10,50), pady=(10,10))
+        self.entry_password.grid(row=2, column=1, padx=(10,50), pady=(10,10))
+
+        self.button_signup.grid(row=3, column=0,columnspan=2,pady=10)
+        self.button_login.grid(row=4, column=0,columnspan=2)
 
     def signup(self):
         new_username = self.entry_username.get()

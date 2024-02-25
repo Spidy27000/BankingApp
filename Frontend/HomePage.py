@@ -1,14 +1,46 @@
 import tkinter as tk
+from tkinter import messagebox
+
+class AppBar(tk.Frame):
+    def __init__(self, master,name ,balance):
+        self.master = master
+        self.name = name
+        self.balance = balance
+        self.menu_options = ['Logout', 'Delete Account']
+
+        tk.Frame.__init__(self,master, padx=10, pady=5, bg="#253585", height=50, width=600,relief="ridge")
+
+        self.name_label = tk.Label(self, text=f"Welcome, {self.name}", fg='white', bg='#253585')
+        self.name_label.pack(side=tk.LEFT)
+
+        self.balance_label = tk.Label(self, text=f"Balance:- ₹{self.balance}", fg='white', bg='#253585')
+        self.balance_label.pack(side=tk.LEFT, padx=(20,0))
+
+        self.menu_dropdown = tk.OptionMenu(self, tk.StringVar(), *self.menu_options, command=self.handle_dropdown)
+        self.menu_dropdown.config(bg='blue', fg='white', highlightthickness=0)
+        self.menu_dropdown.pack(side=tk.RIGHT)
+
+    def handle_dropdown(self, option):
+        if option == 'Logout':
+            self.logout()
+        elif option == 'Delete Account':
+            self.delete_account()
+
+    def logout(self):
+        # Code for logging out
+        messagebox.showinfo("Logout", "You have been logged out.")
+
+    def delete_account(self):
+        # Code for deleting account
+        messagebox.showinfo("Delete Account", "Your account has been deleted.")
 
 
 class HomePage(tk.Frame):
     def __init__(self, master):
-        tk.Frame.__init__(self, master,background="#202020")
+        tk.Frame.__init__(self, master,background="#FFFFFF")
         self.master = master
 
-        self.top_bar_frame = tk.Frame(self, bg="#151E3D", height=50, width=400)
-        self.name_label = tk.Label(self.top_bar_frame, text=master.get_name())
-        # self.name_label.pack()
+        self.app_bar_frame = AppBar(self,self.get_name(), self.get_balance())
 
         self.add_money_button = tk.Button(
             self, text="Add Cash", command=lambda: master.add_money(),
@@ -26,11 +58,14 @@ class HomePage(tk.Frame):
             self, text="Show all transtions", command=lambda: master.show_transation(),
             height=2,width=15
         )
-        self.top_bar_frame.grid_configure(columnspan=2)
-        self.top_bar_frame.grid(column=0, row=0)
-        self.add_money_button.grid(column=0, row=1, padx=10, pady=30)
-        self.withdraw_money_button.grid(column=1, row=1, padx=10, pady=30)
-        self.transfer_money_button.grid(column=0, row=2, padx=10, pady=30)
-        self.show_transation_button.grid(column=1, row=2, padx=10, pady=30)
+        self.app_bar_frame.place(relx=0.5, rely=0.125, relwidth=1, relheight=50/400, anchor="s")
+        self.add_money_button.grid(column=0, row=1, padx=10, pady=30,sticky="nsew")
+        self.withdraw_money_button.grid(column=1, row=1, padx=10, pady=30,sticky="nsew")
+        self.transfer_money_button.grid(column=0, row=2, padx=10, pady=30,sticky="nsew")
+        self.show_transation_button.grid(column=1, row=2, padx=10, pady=30,sticky="nsew")
 
+    def get_name(self):
+        return "tanish"
     
+    def get_balance(self):
+        return 10000
