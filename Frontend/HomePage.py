@@ -56,7 +56,7 @@ class HomePage(tk.Frame):
         self.withdraw_money_button = tk.Button(
             self,
             text="Withdraw Cash",
-            command=lambda: master.withdraw_money(),
+            command=lambda: master.show_withdraw_money(),
             height=4,
             width=30,
         )
