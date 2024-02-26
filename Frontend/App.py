@@ -3,7 +3,7 @@ from enum import Enum, auto
 from Frontend.LoginPage import LoginPage
 from Frontend.SignUpPage import SignUpPage
 from Frontend.HomePage import HomePage
-from Frontend.Utils import AddMoneyPage, WithDrawMoneyPage
+from Frontend.Utils import AddMoneyPage, TransferMoneyPage, WithDrawMoneyPage
 
 
 class PageType(Enum):
@@ -12,6 +12,7 @@ class PageType(Enum):
     Home = auto()
     AddMoney = auto()
     WithDrawMoney = auto()
+    TransferMoney = auto()
     NoneType = auto()
 
 
@@ -25,6 +26,7 @@ class MainApplication(tk.Tk):
         self.signup_page = SignUpPage(self)
         self.add_money_page = AddMoneyPage(self)
         self.withdraw_money_page = WithDrawMoneyPage(self)
+        self.transfer_money_page = TransferMoneyPage(self)
         self.current_page = PageType.NoneType
 
         self.show_login()
@@ -41,6 +43,8 @@ class MainApplication(tk.Tk):
                 self.add_money_page.place_forget()
             case PageType.WithDrawMoney:
                 self.withdraw_money_page.place_forget()
+            case PageType.TransferMoney:
+                self.transfer_money_page.place_forget()
             case _:
                 return
             # NOTE: add all cases
@@ -68,11 +72,12 @@ class MainApplication(tk.Tk):
             self.user_id = user_id
         self.current_page = PageType.Home
 
-    def transfer_money(self):
-        print("tranfer")
-
-    def show_transation(self):
-        print("show transation")
+    def show_transfer_money(self):
+        self.transfer_money_page.place(
+            relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center"
+        )
+        self._place_forget()
+        self.current_page = PageType.TransferMoney
 
     def show_add_money(self):
         self.add_money_page.place(
@@ -87,6 +92,9 @@ class MainApplication(tk.Tk):
         )
         self._place_forget()
         self.current_page = PageType.WithDrawMoney
+
+    def show_transation(self):
+        print("show transation")
 
     def add_money(self, ammount):
         print(f"{ammount} add to account")

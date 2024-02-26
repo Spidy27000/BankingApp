@@ -22,13 +22,32 @@ class AppBar(tk.Frame):
         self.name_label = tk.Label(
             self, text=f"Welcome, {self.name}", fg="white", bg="#253585"
         )
-        self.name_label.pack(side=tk.LEFT)
 
         self.balance_label = tk.Label(
             self, text=f"Balance:- ₹{self.balance}", fg="white", bg="#253585"
         )
+        self.logout_button = tk.Button(
+            self,
+            text="Logout",
+            bg="#253285",
+            fg="white",
+            relief="solid",
+            borderwidth=0,
+            command=lambda: self.logout(),
+        )
+        self.delete_button = tk.Button(
+            self,
+            text="Delete Account",
+            bg="#253285",
+            fg="white",
+            relief="solid",
+            borderwidth=0,
+            command=lambda: self.delete_account(),
+        )
+        self.name_label.pack(side=tk.LEFT)
         self.balance_label.pack(side=tk.LEFT, padx=(20, 0))
-        # TODO: add logout and delete account button
+        self.logout_button.pack(side=tk.RIGHT, padx=(10, 10))
+        self.delete_button.pack(side=tk.RIGHT)
 
     def logout(self):
         # Code for logging out
@@ -63,7 +82,7 @@ class HomePage(tk.Frame):
         self.transfer_money_button = tk.Button(
             self,
             text="Tranfer",
-            command=lambda: master.transfer_money(),
+            command=lambda: master.show_transfer_money(),
             height=4,
             width=30,
         )

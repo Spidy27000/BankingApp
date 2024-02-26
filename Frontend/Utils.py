@@ -29,7 +29,7 @@ class AddMoneyPage(tk.Frame):
             self.master.add_money(ammount)
             messagebox.showinfo(
                 "Money Deposited",
-                f"The ammonut of {ammount} was Deposited to your Account ",
+                f"The ammount of {ammount} was Deposited to your Account ",
             )
             self.master.show_home()
         else:
@@ -41,10 +41,12 @@ class AddMoneyPage(tk.Frame):
                 messagebox.showerror(
                     "Invalid input format", "Enter the ammount in numbers"
                 )
+        self.amount_entry.delete(0, "end")
 
 
 class WithDrawMoneyPage(tk.Frame):
     def __init__(self, master):
+        self.master = master
         tk.Frame.__init__(self, master, bg="#FFFFFF")
         self.amount_label = tk.Label(
             self, bg="#FFFFFF", text="Enter the Amount to be withdrawn:"
@@ -70,7 +72,7 @@ class WithDrawMoneyPage(tk.Frame):
             self.master.withdraw_money(ammount)
             messagebox.showinfo(
                 "Money withdrawn",
-                f"The ammonut of {ammount} was withdrawn from your Account ",
+                f"The ammount of {ammount} was withdrawn from your Account ",
             )
             self.master.show_home()
         else:
@@ -82,3 +84,49 @@ class WithDrawMoneyPage(tk.Frame):
                 messagebox.showerror(
                     "Invalid input format", "enter the ammount in numbers"
                 )
+        self.amount_entry.delete(0, "end")
+
+
+class TransferMoneyPage(tk.Frame):
+    def __init__(self, master):
+        self.master = master
+        tk.Frame.__init__(self, master, bg="#FFFFFF")
+        self.username_label = tk.Label(self, text=" Enter username:", bg="white")
+        self.username_entry = tk.Entry(
+            self, relief="solid", bg="#FFFFFF", borderwidth=1
+        )
+        self.ammount_label = tk.Label(self, text="Enter amount:", bg="white")
+        self.ammount_entry = tk.Entry(self, relief="solid", bg="#FFFFFF", borderwidth=1)
+
+        self.password_label = tk.Label(self, text="Enter Password:", bg="white")
+        self.password_entry = tk.Entry(
+            self, relief="solid", bg="#FFFFFF", borderwidth=1, show="*"
+        )
+
+        self.submit_button = tk.Button(
+            self,
+            text="Transfer",
+            relief="solid",
+            bg="white",
+            command=lambda: self.tranfer_money(),
+        )
+
+        self.username_label.grid(row=0, column=0, padx=(170, 10), pady=(50, 10))
+        self.ammount_label.grid(row=1, column=0, padx=(170, 10), pady=(10, 10))
+        self.password_label.grid(row=2, column=0, padx=(170, 10), pady=(10, 10))
+        self.username_entry.grid(row=0, column=1, padx=(10, 50), pady=(50, 10))
+        self.ammount_entry.grid(row=1, column=1, padx=(10, 50), pady=(10, 10))
+        self.password_entry.grid(row=2, column=1, padx=(10, 50), pady=(10, 10))
+
+        self.submit_button.grid(row=3, column=0, padx=(170, 0), columnspan=2, pady=10)
+
+    def tranfer_money(self):
+        username = self.username_entry.get()
+        amount = self.ammount_entry.get()
+        password_label = self.password_entry.get()
+        self.master.show_home()
+
+
+class TranstionsPage(tk.Frame):
+    def __init__(self, master):
+        tk.Frame.__init__(self, master, bg="#FFFFFF")

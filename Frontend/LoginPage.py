@@ -30,13 +30,13 @@ class LoginPage(tk.Frame):
             borderwidth=1,
         )
 
-        self.label_username.grid(row=0, column=0, padx=(60, 10), pady=(40, 10))
+        self.label_username.grid(row=0, column=0, padx=(170, 10), pady=(40, 10))
         self.entry_username.grid(row=0, column=1, padx=(10, 50), pady=(40, 10))
-        self.label_password.grid(row=1, column=0, padx=(60, 10), pady=(10, 10))
+        self.label_password.grid(row=1, column=0, padx=(170, 10), pady=(10, 10))
         self.entry_password.grid(row=1, column=1, padx=(10, 50), pady=(10, 10))
 
-        self.button_login.grid(row=2, column=0, pady=10, columnspan=2)
-        self.button_signup.grid(row=3, column=0, columnspan=2)
+        self.button_login.grid(row=2, column=0, pady=10, padx=(170, 10), columnspan=2)
+        self.button_signup.grid(row=3, column=0, padx=(170, 0), columnspan=2)
 
     def login(self):
         username = self.entry_username.get()
