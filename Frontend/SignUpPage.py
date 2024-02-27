@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 
+from Backend.Database import Database
+
 
 class SignUpPage(tk.Frame):
     def __init__(self, master):
@@ -46,11 +48,24 @@ class SignUpPage(tk.Frame):
         new_username = self.entry_username.get()
         new_password = self.entry_password.get()
         new_display_name = self.entry_display_name.get()
+        db = Database()
+        if (
+            not check_is_empty(new_username)
+            or not check_is_empty(new_password)
+            or not check_is_empty(new_display_name)
+        ):
+            if db.is_username_taken(new_username):
+                db.add_user(new_username, new_password, new_display_name)
+                messagebox.showinfo(
+                    "Sign Up Successful", "Account created for {}".format(new_username)
+                )
+                id = db.get_user_id(new_username)
+                self.master.show_home(id)
+            else:
+                messagebox.showerror("Sign up Failed", "username already taken")
+        else:
+            messagebox.showerror("Sign up Failed", "All field should be filled")
 
-        # Basic signup logic (you can replace this with your registration logic)
-        messagebox.showinfo(
-            "Sign Up Successful", "Account created for {}".format(new_username)
-        )
-        id = 0
-        # TODO: add a db function to get if from user id
-        self.master.show_home(id)
+
+def check_is_empty(str):
+    return str.isspace() or (str == "")

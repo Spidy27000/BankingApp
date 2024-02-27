@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 
+from Backend.Database import Database
+
 
 class LoginPage(tk.Frame):
     def __init__(self, master):
@@ -41,12 +43,12 @@ class LoginPage(tk.Frame):
     def login(self):
         username = self.entry_username.get()
         password = self.entry_password.get()
+        db = Database()
 
         # Basic login validation (you can replace this with your authentication logic)
-        if username == "user" and password == "password":
+        if db.is_user_valid(username, password):
             messagebox.showinfo("Login Successful", "Welcome, {}".format(username))
-            # TODO: add a db function to get user id from username
-            id = 0
+            id = db.get_user_id(username)
             # get_user_id(username)
             self.master.show_home(id)
         else:

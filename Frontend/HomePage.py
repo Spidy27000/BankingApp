@@ -52,10 +52,12 @@ class AppBar(tk.Frame):
     def logout(self):
         # Code for logging out
         messagebox.showinfo("Logout", "You have been logged out.")
+        self.master.master.show_login()
 
     def delete_account(self):
         # Code for deleting account
         messagebox.showinfo("Delete Account", "Your account has been deleted.")
+        self.master.master.show_login()
 
 
 class HomePage(tk.Frame):
@@ -63,7 +65,8 @@ class HomePage(tk.Frame):
         tk.Frame.__init__(self, master, background="#FFFFFF")
         self.master = master
 
-        self.app_bar_frame = AppBar(self, self.get_name(), self.get_balance())
+        self.app_bar_frame = AppBar(self, master.get_name(), master.get_balance())
+        self.user_id: int
 
         self.add_money_button = tk.Button(
             self,
@@ -108,9 +111,3 @@ class HomePage(tk.Frame):
         self.show_transation_button.grid(
             column=1, row=2, padx=10, pady=(10, 0), sticky="nsew"
         )
-
-    def get_name(self):
-        return "tanish"
-
-    def get_balance(self):
-        return 10000

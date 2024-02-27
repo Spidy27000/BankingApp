@@ -1,5 +1,6 @@
 import tkinter as tk
 from enum import Enum, auto
+from Backend.Database import Database
 from Frontend.LoginPage import LoginPage
 from Frontend.SignUpPage import SignUpPage
 from Frontend.HomePage import HomePage
@@ -56,7 +57,6 @@ class MainApplication(tk.Tk):
                 self.transtions_page.place_forget()
             case _:
                 return
-            # NOTE: add all cases
 
     def show_login(self):
         self.login_page.place(
@@ -79,6 +79,7 @@ class MainApplication(tk.Tk):
         self._place_forget()
         if user_id is not None:
             self.user_id = user_id
+            self.home_page.user_id = user_id
         self.current_page = PageType.Home
 
     def show_transfer_money(self):
@@ -115,3 +116,11 @@ class MainApplication(tk.Tk):
 
     def withdraw_money(self, ammount):
         print(f"{ammount} is withdrawn")
+
+    def get_name(self):
+        db = Database()
+        res = db.get_name(self.user_id)
+        return res
+
+    def get_balance(self):
+        return 10000
