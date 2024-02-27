@@ -3,7 +3,12 @@ from enum import Enum, auto
 from Frontend.LoginPage import LoginPage
 from Frontend.SignUpPage import SignUpPage
 from Frontend.HomePage import HomePage
-from Frontend.Utils import AddMoneyPage, TransferMoneyPage, WithDrawMoneyPage
+from Frontend.Utils import (
+    AddMoneyPage,
+    TransferMoneyPage,
+    TranstionsPage,
+    WithDrawMoneyPage,
+)
 
 
 class PageType(Enum):
@@ -13,6 +18,7 @@ class PageType(Enum):
     AddMoney = auto()
     WithDrawMoney = auto()
     TransferMoney = auto()
+    Transtions = auto()
     NoneType = auto()
 
 
@@ -27,6 +33,7 @@ class MainApplication(tk.Tk):
         self.add_money_page = AddMoneyPage(self)
         self.withdraw_money_page = WithDrawMoneyPage(self)
         self.transfer_money_page = TransferMoneyPage(self)
+        self.transtions_page = TranstionsPage(self)
         self.current_page = PageType.NoneType
 
         self.show_login()
@@ -45,6 +52,8 @@ class MainApplication(tk.Tk):
                 self.withdraw_money_page.place_forget()
             case PageType.TransferMoney:
                 self.transfer_money_page.place_forget()
+            case PageType.Transtions:
+                self.transtions_page.place_forget()
             case _:
                 return
             # NOTE: add all cases
@@ -94,7 +103,12 @@ class MainApplication(tk.Tk):
         self.current_page = PageType.WithDrawMoney
 
     def show_transation(self):
-        print("show transation")
+        self.transtions_page.fill_data()
+        self.transtions_page.place(
+            relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center"
+        )
+        self._place_forget()
+        self.current_page = PageType.Transtions
 
     def add_money(self, ammount):
         print(f"{ammount} add to account")

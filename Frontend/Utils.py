@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 
 
@@ -130,3 +131,47 @@ class TransferMoneyPage(tk.Frame):
 class TranstionsPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master, bg="#FFFFFF")
+        self.master = master
+        self.treeveiw_frame = tk.Frame(self, width=600, height=400)
+        self.treeveiw_frame.place(
+            relx=0.5, rely=0.435, relwidth=1, relheight=350 / 400, anchor="center"
+        )
+        self.table = ttk.Treeview(
+            self.treeveiw_frame, columns=("Money_from", "Date", "Withdraw", "Deposit"),show="headings"
+        )
+        self.to_home_button = tk.Button(
+            self, text="Return to home", command=lambda: master.show_home()
+        )
+        self.table.heading("Money_from", text="Trantion_From")
+        self.table.heading("Date", text="Date")
+        self.table.heading("Withdraw", text="Withdraw")
+        self.table.heading("Deposit", text="Deposit")
+        self.table.column("Money_from", width=150)
+        self.table.column("Date", width=150)
+        self.table.column("Withdraw", width=150)
+        self.table.column("Deposit", width=150)
+
+        self.table.pack(side=tk.LEFT, fill="y", expand=False)
+        self.to_home_button.pack(side="bottom", pady=(0, 10))
+
+    def fill_data(self):
+        self.table.delete(*self.table.get_children())
+        # TODO: add data from db
+        data = [
+            ("john", 100, 0, "mary"),
+            ("alice", 50, 0, "bob"),
+            ("eve", 0, 200, "david"),
+            ("john", 100, 0, "mary"),
+            ("john", 100, 0, "mary"),
+            ("john", 100, 0, "mary"),
+            ("john", 100, 0, "mary"),
+            ("john", 100, 0, "mary"),
+            ("alice", 50, 0, "bob"),
+            ("eve", 0, 200, "david"),
+            ("alice", 50, 0, "bob"),
+            ("eve", 0, 200, "david"),
+            ("alice", 50, 0, "bob"),
+            ("eve", 0, 200, "david"),
+        ]
+        for item in data:
+            self.table.insert("", "end", values=item)
