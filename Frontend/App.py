@@ -43,8 +43,13 @@ class MainApplication(tk.Tk):
         match self.current_page:
             case PageType.Login:
                 self.login_page.place_forget()
+                self.login_page.entry_username.delete(0, "end")
+                self.login_page.entry_password.delete(0, "end")
             case PageType.SignUp:
                 self.signup_page.place_forget()
+                self.signup_page.entry_username.delete(0, "end")
+                self.signup_page.entry_password.delete(0, "end")
+                self.signup_page.entry_display_name.delete(0, "end")
             case PageType.Home:
                 self.home_page.place_forget()
             case PageType.AddMoney:
@@ -73,13 +78,14 @@ class MainApplication(tk.Tk):
         self.current_page = PageType.SignUp
 
     def show_home(self, user_id=None):
+        if user_id is not None:
+            self.user_id = user_id
+            self.home_page.set_name(user_id)
+            self.home_page.set_balance(user_id)
         self.home_page.place(
             relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center"
         )
         self._place_forget()
-        if user_id is not None:
-            self.user_id = user_id
-            self.home_page.user_id = user_id
         self.current_page = PageType.Home
 
     def show_transfer_money(self):
@@ -112,9 +118,11 @@ class MainApplication(tk.Tk):
         self.current_page = PageType.Transtions
 
     def add_money(self, ammount):
+        # TODO: add a db function
         print(f"{ammount} add to account")
 
     def withdraw_money(self, ammount):
+        # TODO: add a db function
         print(f"{ammount} is withdrawn")
 
     def get_name(self):

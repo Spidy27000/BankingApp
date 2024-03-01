@@ -1,4 +1,3 @@
-from os import times_result
 import sqlite3
 
 DBNAME = "mydb.db"
@@ -13,8 +12,23 @@ class Database:
             id integer primary key autoincrement,
             username text not null ,
             name text not null,
-            password text not null
+            password text not null,
+            balance integer default 0
         );"""
+        )
+        self.cursor.execute(
+            """create table if not exists transtion(
+                id integer primary key autoincrement,
+                date date not null,
+                withdraw integer default 0,
+                deposit interger default 0,
+                user_id interger not null ,
+                other_id interger,
+                Foregin key (user_id) references users(id),
+                Foregin key (other_id) references users(id)
+            )
+    
+        """
         )
         self.conn.commit()
         self.conn.close()
@@ -23,8 +37,12 @@ class Database:
         self.conn = sqlite3.connect(DBNAME)
         self.cursor = self.conn.cursor()
         self.cursor.execute(
-            "insert into users(username,name,password) values(':username',':name',':password')",
-            {"username": username, "name": name, "password": password},
+            "insert into users(username,name,password) values(?,?,?)",
+            (
+                username,
+                name,
+                password,
+            ),
         )
         self.conn.commit()
         self.conn.close()
@@ -32,10 +50,7 @@ class Database:
     def is_username_taken(self, username):
         self.conn = sqlite3.connect(DBNAME)
         self.cursor = self.conn.cursor()
-        self.cursor.execute(
-            'select 1 from users where username =":username;"',
-            {"username": username},
-        )
+        self.cursor.execute("select 1 from users where username =?", (username,))
         res = self.cursor.fetchall()
         self.conn.commit()
         self.conn.close()
@@ -48,8 +63,11 @@ class Database:
         self.conn = sqlite3.connect(DBNAME)
         self.cursor = self.conn.cursor()
         self.cursor.execute(
-            'select 1 from users where username = ":username" AND password = ":password"',
-            {"username": username, "password": password},
+            "select 1 from users where username =? AND password = ?;",
+            (
+                username,
+                password,
+            ),
         )
         res = self.cursor.fetchall()
         self.conn.commit()
@@ -62,21 +80,52 @@ class Database:
     def get_user_id(self, username):
         self.conn = sqlite3.connect(DBNAME)
         self.cursor = self.conn.cursor()
-        self.cursor.execute(
-            'select id from users where username = ":username"', {"username": username}
-        )
+        self.cursor.execute("select id from users where username =?", (username,))
         res = self.cursor.fetchone()
         self.conn.commit()
         self.conn.close()
-        return res
+        return res[0]
 
     def get_name(self, user_id):
         self.conn = sqlite3.connect(DBNAME)
         self.cursor = self.conn.cursor()
-        self.cursor.execute(
-            'select name from users where id = ":user_id"', {"user_id": user_id}
-        )
+        self.cursor.execute("SELECT name FROM users WHERE id=?", (user_id,))
         res = self.cursor.fetchone()
         self.conn.commit()
         self.conn.close()
-        return res
+        if res:
+            return res[0]
+        else:
+            return None
+
+    def get_balance(self, user_id):
+        self.conn = sqlite3.connect(DBNAME)
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("SELECT balance FROM users WHERE id=?", (user_id,))
+        res = self.cursor.fetchone()
+        self.conn.commit()
+        self.conn.close()
+        if res:
+            return res[0]
+        else:
+            return None
+
+    def update_balance(self, id, amount):
+        self.conn = sqlite3.connect(DBNAME)
+        self.cursor = self.conn.cursor()
+        self.cursor.execute(
+            "update users set balance =balance + ? where id = ?",
+            (
+                amount,
+                id,
+            ),
+        )
+        self.conn.commit()
+        self.conn.close()
+
+    def delete_user(self, id):
+        self.conn = sqlite3.connect(DBNAME)
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("delete from users where id = ?", (id,))
+        self.conn.commit()
+        self.conn.close()

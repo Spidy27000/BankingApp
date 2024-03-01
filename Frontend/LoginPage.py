@@ -48,8 +48,8 @@ class LoginPage(tk.Frame):
         # Basic login validation (you can replace this with your authentication logic)
         if db.is_user_valid(username, password):
             messagebox.showinfo("Login Successful", "Welcome, {}".format(username))
+
             id = db.get_user_id(username)
-            # get_user_id(username)
             self.master.show_home(id)
         else:
             messagebox.showerror("Login Failed", "Invalid username or password")
