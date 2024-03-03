@@ -28,6 +28,7 @@ class MainApplication(tk.Tk):
         tk.Tk.__init__(self)
         self.title("Banking App")
         self.user_id = 0
+        self.db = Database()
         self.home_page = HomePage(self)
         self.login_page = LoginPage(self)
         self.signup_page = SignUpPage(self)
@@ -117,18 +118,8 @@ class MainApplication(tk.Tk):
         self._place_forget()
         self.current_page = PageType.Transtions
 
-    def add_money(self, ammount):
-        # TODO: add a db function
-        print(f"{ammount} add to account")
+    def add_money(self, amount):
+        self.db.deposit_money(self.user_id, amount)
 
-    def withdraw_money(self, ammount):
-        # TODO: add a db function
-        print(f"{ammount} is withdrawn")
-
-    def get_name(self):
-        db = Database()
-        res = db.get_name(self.user_id)
-        return res
-
-    def get_balance(self):
-        return 10000
+    def withdraw_money(self, amount):
+        self.db.withdraw_money(self.user_id, amount)

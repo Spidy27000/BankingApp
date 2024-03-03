@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+from Backend.Database import Database
+
 
 class AddMoneyPage(tk.Frame):
     def __init__(self, master):
@@ -24,23 +26,23 @@ class AddMoneyPage(tk.Frame):
         self.submit_button.pack(pady=(10, 0))
 
     def add(self):
-        ammount = self.amount_entry.get()
-        if ammount.isnumeric():
-            ammount = int(ammount)
-            self.master.add_money(ammount)
+        amount = self.amount_entry.get()
+        if amount.isnumeric():
+            amount = int(amount)
+            self.master.add_money(amount)
             messagebox.showinfo(
                 "Money Deposited",
-                f"The ammount of {ammount} was Deposited to your Account ",
+                f"The amount of {amount} was Deposited to your Account ",
             )
             self.master.show_home()
         else:
-            if ammount.isspace() or (ammount == ""):
+            if check_is_empty(amount):
                 messagebox.showerror(
                     "Invalid input format", "The input field can not be empty"
                 )
             else:
                 messagebox.showerror(
-                    "Invalid input format", "Enter the ammount in numbers"
+                    "Invalid input format", "Enter the amount in numbers"
                 )
         self.amount_entry.delete(0, "end")
 
@@ -67,23 +69,23 @@ class WithDrawMoneyPage(tk.Frame):
         self.submit_button.pack(pady=(10, 0))
 
     def withdraw(self):
-        ammount = self.amount_entry.get()
-        if ammount.isnumeric():
-            ammount = int(ammount)
-            self.master.withdraw_money(ammount)
+        amount = self.amount_entry.get()
+        if amount.isnumeric():
+            amount = int(amount)
+            self.master.withdraw_money(amount)
             messagebox.showinfo(
                 "Money withdrawn",
-                f"The ammount of {ammount} was withdrawn from your Account ",
+                f"The amount of {amount} was withdrawn from your Account ",
             )
             self.master.show_home()
         else:
-            if ammount.isspace() or (ammount == ""):
+            if check_is_empty(amount):
                 messagebox.showerror(
                     "Invalid input format", "The input field can not be empty"
                 )
             else:
                 messagebox.showerror(
-                    "Invalid input format", "enter the ammount in numbers"
+                    "Invalid input format", "enter the amount in numbers"
                 )
         self.amount_entry.delete(0, "end")
 
@@ -103,6 +105,7 @@ class TransferMoneyPage(tk.Frame):
         self.password_entry = tk.Entry(
             self, relief="solid", bg="#FFFFFF", borderwidth=1, show="*"
         )
+        self.db = Database()
 
         self.submit_button = tk.Button(
             self,
@@ -124,7 +127,25 @@ class TransferMoneyPage(tk.Frame):
     def tranfer_money(self):
         username = self.username_entry.get()
         amount = self.ammount_entry.get()
-        password_label = self.password_entry.get()
+        password = self.password_entry.get()
+        main_username = self.db.get_name(self.master.user_id)
+        other_id = self.db.get_user_id(username)
+        print(username, amount, password)
+        if (
+            check_is_empty(username)
+            or check_is_empty(amount)
+            or check_is_empty(password)
+        ):
+            messagebox.showerror("Invalid input", "the input field can not be empty")
+            return
+
+        if self.db.is_username_taken(username) and (other_id == self.master.user_id):
+            messagebox.showerror("Invalid user", "the username does not exists")
+            return
+        if not self.db.is_user_valid(main_username, password):
+            messagebox.showerror("Invalid password", "u have inputed wrong password")
+            return
+        self.db.transfer_money(self.master.user_id, other_id, amount)
         self.master.show_home()
 
 
@@ -137,7 +158,9 @@ class TranstionsPage(tk.Frame):
             relx=0.5, rely=0.435, relwidth=1, relheight=350 / 400, anchor="center"
         )
         self.table = ttk.Treeview(
-            self.treeveiw_frame, columns=("Money_from", "Date", "Withdraw", "Deposit"),show="headings"
+            self.treeveiw_frame,
+            columns=("Money_from", "Date", "Withdraw", "Deposit"),
+            show="headings",
         )
         self.to_home_button = tk.Button(
             self, text="Return to home", command=lambda: master.show_home()
@@ -175,3 +198,7 @@ class TranstionsPage(tk.Frame):
         ]
         for item in data:
             self.table.insert("", "end", values=item)
+
+
+def check_is_empty(str):
+    return str.isspace() or (str == "")

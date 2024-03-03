@@ -54,8 +54,8 @@ class SignUpPage(tk.Frame):
             or not check_is_empty(new_password)
             or not check_is_empty(new_display_name)
         ):
-            if db.is_username_taken(new_username):
-                db.add_user(new_username, new_password, new_display_name)
+            if not db.is_username_taken(new_username):
+                db.add_user(new_username, new_display_name, new_password)
                 messagebox.showinfo(
                     "Sign Up Successful", "Account created for {}".format(new_username)
                 )

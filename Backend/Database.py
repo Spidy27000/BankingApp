@@ -17,18 +17,16 @@ class Database:
         );"""
         )
         self.cursor.execute(
-            """create table if not exists transtion(
-                id integer primary key autoincrement,
-                date date not null,
-                withdraw integer default 0,
-                deposit interger default 0,
-                user_id interger not null ,
-                other_id interger,
-                Foregin key (user_id) references users(id),
-                Foregin key (other_id) references users(id)
-            )
-    
-        """
+            """CREATE TABLE IF NOT EXISTS transtion(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date DATE NOT NULL,
+            withdraw INTEGER DEFAULT 0,
+            deposit INTEGER DEFAULT 0,
+            user_id INTEGER NOT NULL,
+            other_id INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (other_id) REFERENCES users(id)
+            )"""
         )
         self.conn.commit()
         self.conn.close()
@@ -55,9 +53,9 @@ class Database:
         self.conn.commit()
         self.conn.close()
         if len(res) > 0:
-            return False
-        else:
             return True
+        else:
+            return False
 
     def is_user_valid(self, username, password):
         self.conn = sqlite3.connect(DBNAME)
@@ -129,3 +127,24 @@ class Database:
         self.cursor.execute("delete from users where id = ?", (id,))
         self.conn.commit()
         self.conn.close()
+
+    def deposit_money(self, id, amount):
+        print("money added")
+
+    def withdraw_money(self, id, amount):
+        print("money withdrawn")
+
+    def transfer_money(self, id, other_id, amount):
+        print("money transfer_money")
+
+    def get_all_data(self):
+        self.conn = sqlite3.connect(DBNAME)
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("select * from users")
+        res = self.cursor.fetchall()
+        self.conn.commit()
+        self.conn.close()
+        for row in res:
+            for info in row:
+                print(info, end=",")
+            print()
