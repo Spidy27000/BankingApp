@@ -29,6 +29,7 @@ class MainApplication(tk.Tk):
         self.title("Banking App")
         self.user_id = 0
         self.db = Database()
+        self.db.get_all_data()
         self.home_page = HomePage(self)
         self.login_page = LoginPage(self)
         self.signup_page = SignUpPage(self)
@@ -59,6 +60,10 @@ class MainApplication(tk.Tk):
                 self.withdraw_money_page.place_forget()
             case PageType.TransferMoney:
                 self.transfer_money_page.place_forget()
+                self.transfer_money_page.username_entry.delete(0,"end")
+                self.transfer_money_page.password_entry.delete(0,"end")
+                self.transfer_money_page.ammount_entry.delete(0,"end")
+
             case PageType.Transtions:
                 self.transtions_page.place_forget()
             case _:
@@ -82,7 +87,7 @@ class MainApplication(tk.Tk):
         if user_id is not None:
             self.user_id = user_id
             self.home_page.set_name(user_id)
-            self.home_page.set_balance(user_id)
+        self.home_page.set_balance(self.user_id)
         self.home_page.place(
             relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center"
         )

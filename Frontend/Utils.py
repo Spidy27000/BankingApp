@@ -70,9 +70,13 @@ class WithDrawMoneyPage(tk.Frame):
 
     def withdraw(self):
         amount = self.amount_entry.get()
+        db = Database()
         if amount.isnumeric():
             amount = int(amount)
             self.master.withdraw_money(amount)
+            if db.get_balance(self.master.user_id) < int(amount):
+                messagebox.showerror("Invalid ammount", "You dont have enough balance")
+                return
             messagebox.showinfo(
                 "Money withdrawn",
                 f"The amount of {amount} was withdrawn from your Account ",
@@ -145,6 +149,10 @@ class TransferMoneyPage(tk.Frame):
         if not self.db.is_user_valid(main_username, password):
             messagebox.showerror("Invalid password", "u have inputed wrong password")
             return
+        if self.db.get_balance(self.master.user_id) <int(amount):
+            messagebox.showerror("Invalid ammount", "You dont have enough balance")
+            return
+
         self.db.transfer_money(self.master.user_id, other_id, amount)
         self.master.show_home()
 
@@ -167,8 +175,8 @@ class TranstionsPage(tk.Frame):
         )
         self.table.heading("Money_from", text="Trantion_From")
         self.table.heading("Date", text="Date")
-        self.table.heading("Withdraw", text="Withdraw")
-        self.table.heading("Deposit", text="Deposit")
+        self.table.heading("Withdraw", text="Credit")
+        self.table.heading("Deposit", text="Debit")
         self.table.column("Money_from", width=150)
         self.table.column("Date", width=150)
         self.table.column("Withdraw", width=150)
@@ -179,23 +187,8 @@ class TranstionsPage(tk.Frame):
 
     def fill_data(self):
         self.table.delete(*self.table.get_children())
-        # TODO: add data from db
-        data = [
-            ("john", 100, 0, "mary"),
-            ("alice", 50, 0, "bob"),
-            ("eve", 0, 200, "david"),
-            ("john", 100, 0, "mary"),
-            ("john", 100, 0, "mary"),
-            ("john", 100, 0, "mary"),
-            ("john", 100, 0, "mary"),
-            ("john", 100, 0, "mary"),
-            ("alice", 50, 0, "bob"),
-            ("eve", 0, 200, "david"),
-            ("alice", 50, 0, "bob"),
-            ("eve", 0, 200, "david"),
-            ("alice", 50, 0, "bob"),
-            ("eve", 0, 200, "david"),
-        ]
+        db = Database()
+        data = db.get_transtion_data(self.master.user_id)
         for item in data:
             self.table.insert("", "end", values=item)
 
