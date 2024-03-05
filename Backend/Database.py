@@ -188,14 +188,3 @@ class Database:
         conn.close()
         return res
 
-    def get_all_data(self):
-        self.conn = sqlite3.connect(DBNAME)
-        self.cursor = self.conn.cursor()
-        self.cursor.execute("select * from users")
-        res = self.cursor.fetchall()
-        self.conn.commit()
-        self.conn.close()
-        for row in res:
-            for info in row:
-                print(info, end=",")
-            print()

@@ -134,7 +134,6 @@ class TransferMoneyPage(tk.Frame):
         password = self.password_entry.get()
         main_username = self.db.get_name(self.master.user_id)
         other_id = self.db.get_user_id(username)
-        print(username, amount, password)
         if (
             check_is_empty(username)
             or check_is_empty(amount)
