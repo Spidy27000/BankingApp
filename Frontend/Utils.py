@@ -20,10 +20,22 @@ class AddMoneyPage(tk.Frame):
             bg="#FFFFFF",
             command=lambda: self.add(),
         )
+        self.cancel_button = tk.Button(
+            self,
+            relief="ridge",
+            text="Cancel",
+            borderwidth=1,
+            bg="#FFFFFF",
+            command=lambda: self.cancel(),
+        )
 
         self.amount_label.pack(pady=(100, 10))
         self.amount_entry.pack(pady=(10, 10))
-        self.submit_button.pack(pady=(10, 0))
+        self.submit_button.pack(pady=(10, 10))
+        self.cancel_button.pack(pady=(10, 0))
+
+    def cancel(self):
+        self.master.show_home()
 
     def add(self):
         amount = self.amount_entry.get()
@@ -63,10 +75,22 @@ class WithDrawMoneyPage(tk.Frame):
             bg="#FFFFFF",
             command=lambda: self.withdraw(),
         )
+        self.cancel_button = tk.Button(
+            self,
+            relief="ridge",
+            text="Cancel",
+            borderwidth=1,
+            bg="#FFFFFF",
+            command=lambda: self.cancel(),
+        )
 
         self.amount_label.pack(pady=(100, 10))
         self.amount_entry.pack(pady=(10, 10))
-        self.submit_button.pack(pady=(10, 0))
+        self.submit_button.pack(pady=(10, 10))
+        self.cancel_button.pack(pady=(10, 0))
+
+    def cancel(self):
+        self.master.show_home()
 
     def withdraw(self):
         amount = self.amount_entry.get()
@@ -118,6 +142,14 @@ class TransferMoneyPage(tk.Frame):
             bg="white",
             command=lambda: self.tranfer_money(),
         )
+        self.cancel_button = tk.Button(
+            self,
+            relief="ridge",
+            text="Cancel",
+            borderwidth=1,
+            bg="#FFFFFF",
+            command=lambda: self.cancel(),
+        )
 
         self.username_label.grid(row=0, column=0, padx=(170, 10), pady=(50, 10))
         self.ammount_label.grid(row=1, column=0, padx=(170, 10), pady=(10, 10))
@@ -127,6 +159,10 @@ class TransferMoneyPage(tk.Frame):
         self.password_entry.grid(row=2, column=1, padx=(10, 50), pady=(10, 10))
 
         self.submit_button.grid(row=3, column=0, padx=(170, 0), columnspan=2, pady=10)
+        self.cancel_button.grid(row=4, column=0, padx=(170, 0), columnspan=2, pady=10)
+
+    def cancel(self):
+        self.master.show_home()
 
     def tranfer_money(self):
         username = self.username_entry.get()
@@ -148,7 +184,7 @@ class TransferMoneyPage(tk.Frame):
         if not self.db.is_user_valid(main_username, password):
             messagebox.showerror("Invalid password", "u have inputed wrong password")
             return
-        if self.db.get_balance(self.master.user_id) <int(amount):
+        if self.db.get_balance(self.master.user_id) < int(amount):
             messagebox.showerror("Invalid ammount", "You dont have enough balance")
             return
 
