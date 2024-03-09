@@ -97,7 +97,6 @@ class WithDrawMoneyPage(tk.Frame):
         db = Database()
         if amount.isnumeric():
             amount = int(amount)
-            self.master.withdraw_money(amount)
             if db.get_balance(self.master.user_id) < int(amount):
                 messagebox.showerror("Invalid ammount", "You dont have enough balance")
                 return
@@ -105,6 +104,7 @@ class WithDrawMoneyPage(tk.Frame):
                 "Money withdrawn",
                 f"The amount of {amount} was withdrawn from your Account ",
             )
+            self.master.withdraw_money(amount)
             self.master.show_home()
         else:
             if check_is_empty(amount):

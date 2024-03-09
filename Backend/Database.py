@@ -3,6 +3,7 @@ from datetime import datetime
 
 DBNAME = "mydb.db"
 
+
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(DBNAME)
@@ -19,7 +20,7 @@ class Database:
         self.cursor.execute(
             """CREATE TABLE IF NOT EXISTS transtion(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            date integer NOT NULL,
+            date TEXT NOT NULL,
             withdraw INTEGER DEFAULT 0,
             deposit INTEGER DEFAULT 0,
             user_id INTEGER NOT NULL,
@@ -108,7 +109,6 @@ class Database:
         else:
             return None
 
-
     def delete_user(self, id):
         self.conn = sqlite3.connect(DBNAME)
         self.cursor = self.conn.cursor()
@@ -117,9 +117,12 @@ class Database:
         self.conn.close()
 
     def deposit_money(self, id, amount):
-        conn= sqlite3.connect(DBNAME)
+        conn = sqlite3.connect(DBNAME)
         curr = conn.cursor()
-        curr.execute("insert into transtion(date,deposit,user_id) values (?,?,?)",(datetime.now().timestamp(),amount,id))
+        curr.execute(
+            "insert into transtion(date,deposit,user_id) values (?,?,?)",
+            (datetime.today().strftime("%d/%m/%Y"), amount, id),
+        )
         curr.execute(
             "update users set balance =balance + ? where id = ?",
             (
@@ -131,9 +134,12 @@ class Database:
         conn.close()
 
     def withdraw_money(self, id, amount):
-        conn= sqlite3.connect(DBNAME)
+        conn = sqlite3.connect(DBNAME)
         curr = conn.cursor()
-        curr.execute("insert into transtion(date,withdraw,user_id) values (?,?,?)",(datetime.now().timestamp(),amount,id))
+        curr.execute(
+            "insert into transtion(date,withdraw,user_id) values (?,?,?)",
+            (datetime.today().strftime("%d/%m/%Y"), amount, id),
+        )
         curr.execute(
             "update users set balance =balance - ? where id = ?",
             (
@@ -145,10 +151,16 @@ class Database:
         conn.close()
 
     def transfer_money(self, id, other_id, amount):
-        conn= sqlite3.connect(DBNAME)
+        conn = sqlite3.connect(DBNAME)
         curr = conn.cursor()
-        curr.execute("insert into transtion(date,deposit,user_id,other_id) values (?,?,?,?)",(datetime.now().timestamp(),amount,id,other_id))
-        curr.execute("insert into transtion(date,withdraw,user_id,other_id) values (?,?,?,?)",(datetime.now().timestamp(),amount,other_id,id))
+        curr.execute(
+            "insert into transtion(date,deposit,user_id,other_id) values (?,?,?,?)",
+            (datetime.today().strftime("%d/%m/%Y"), amount, id, other_id),
+        )
+        curr.execute(
+            "insert into transtion(date,withdraw,user_id,other_id) values (?,?,?,?)",
+            (datetime.today().strftime("%d/%m/%Y"), amount, other_id, id),
+        )
         curr.execute(
             "update users set balance =balance - ? where id = ?",
             (
@@ -166,12 +178,12 @@ class Database:
         conn.commit()
         conn.close()
 
-    def get_transtion_data(self,id):
+    def get_transtion_data(self, id):
         conn = sqlite3.connect(DBNAME)
         curr = conn.cursor()
-        #trastion from date withdraw deposit
+        # trastion from date withdraw deposit
         curr.execute(
-            '''SELECT 
+            """SELECT 
                 CASE 
                     WHEN t.other_id IS NULL THEN '' 
                     ELSE u.name 
@@ -182,9 +194,10 @@ class Database:
             FROM transtion AS t 
             LEFT JOIN users AS u ON t.other_id = u.id 
             WHERE t.user_id = ?;
-        ''',(id,))
-        res= curr.fetchall()
+        """,
+            (id,),
+        )
+        res = curr.fetchall()
         conn.commit()
         conn.close()
         return res
-
