@@ -186,6 +186,7 @@ class Database:
             """SELECT 
                 CASE 
                     WHEN t.other_id IS NULL THEN '' 
+                    WHEN u.name is null then ''  
                     ELSE u.name 
                 END AS name,
                 t.date AS date,
