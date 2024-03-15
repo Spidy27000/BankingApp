@@ -194,7 +194,7 @@ class Database:
                 t.deposit AS deposit 
             FROM transtion AS t 
             LEFT JOIN users AS u ON t.other_id = u.id 
-            WHERE t.user_id = ?;
+            WHERE t.user_id = ? order by t.id desc;
         """,
             (id,),
         )

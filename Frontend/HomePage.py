@@ -98,13 +98,13 @@ class HomePage(tk.Frame):
             relx=0.5, rely=0.125, relwidth=1, relheight=50 / 400, anchor="s"
         )
         self.add_money_button.grid(
-            column=0, row=1, padx=(20,10), pady=(70, 10), sticky="nsew"
+            column=0, row=1, padx=10, pady=(70, 10), sticky="nsew"
         )
         self.withdraw_money_button.grid(
             column=1, row=1, padx=10, pady=(70, 10), sticky="nsew"
         )
         self.transfer_money_button.grid(
-            column=0, row=2, padx=(20,10), pady=(10, 0), sticky="nsew"
+            column=0, row=2, padx=10, pady=(10, 0), sticky="nsew"
         )
         self.show_transation_button.grid(
             column=1, row=2, padx=10, pady=(10, 0), sticky="nsew"
